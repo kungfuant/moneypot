@@ -544,3 +544,39 @@ $$ LANGUAGE plv8;
 CREATE TRIGGER plays_users_stats_trigger
 AFTER INSERT OR UPDATE OR DELETE ON plays
     FOR EACH ROW EXECUTE PROCEDURE plays_users_stats_trigger();
+
+CREATE OR REPLACE FUNCTION game_info(game_id bigint) RETURNS json AS $$
+  // Perform a left join here to get null as a hash for old games.
+  var sqlGame =
+    'SELECT game_crash, created, hash' +
+    '  FROM games LEFT JOIN game_hashes ON games.id = game_id' +
+    '  WHERE games.ended = true AND games.id = $1';
+  var game = plv8.execute(sqlGame, [game_id]);
+
+  // Game hasn't ended yet or doesn't exist.
+  if (game.length <= 0)
+    return null;
+  game = game[0];
+
+  var sqlPlays =
+    'SELECT username, bet, (100 * cash_out / bet)::bigint AS stopped_at, bonus' +
+    '  FROM plays JOIN users ON user_id = users.id WHERE game_id = $1';
+  var plays = plv8.execute(sqlPlays, [game_id]);
+
+  var player_info = {};
+  plays.forEach(function(play) {
+    player_info[play.username] = {
+      bet: play.bet,
+      stopped_at: play.stopped_at,
+      bonus: play.bonus
+    };
+  });
+
+  return {
+    game_id:game_id,
+    game_crash:game.game_crash,
+    hash:game.hash,
+    player_info:player_info,
+    created:game.created
+  };
+$$ LANGUAGE plv8 STABLE STRICT;

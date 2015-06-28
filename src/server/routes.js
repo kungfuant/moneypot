@@ -163,6 +163,7 @@ module.exports = function(app) {
     app.get('/play-id/:id', tableDev());
 
     app.get('/leaderboard', games.getLeaderBoard);
+    app.get('/game/:id.json', games.showJson);
     app.get('/game/:id', games.show);
     app.get('/user/:name', user.profile);
 

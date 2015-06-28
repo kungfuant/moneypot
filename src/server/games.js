@@ -35,6 +35,28 @@ exports.show = function(req, res, next) {
  /**
   * GET
   * Public API
+  * Show a single game info
+  **/
+exports.showJson = function(req, res, next) {
+    var user = req.user;
+    var gameId = parseInt(req.params.id);
+
+    if (!gameId || typeof gameId !== 'number')
+        return res.render('404');
+
+    database.getGameInfo(gameId, function(err, game) {
+        if (err) {
+            if (err === 'GAME_DOES_NOT_EXISTS')
+                return res.json(err);
+            return next(new Error('Unable to get game: \n' + err));
+        }
+        res.json(game);
+    });
+};
+
+ /**
+  * GET
+  * Public API
   * Shows the leader board
   **/
  exports.getLeaderBoard = function(req, res, next) {

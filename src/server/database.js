@@ -346,6 +346,19 @@ exports.getGamesPlays = function(gameId, callback) {
     );
 };
 
+exports.getGameInfo = function(gameId, callback) {
+    assert(gameId && callback);
+
+    query('SELECT game_info($1)', [gameId], function(err, result) {
+        if (err) return callback(err);
+        console.log(result.rows);
+        if (result.rows.length === 0 || !result.rows[0].game_info)
+            return callback('GAME_DOES_NOT_EXISTS');
+        assert(result.rows.length === 1);
+        callback(null, result.rows[0].game_info);
+    });
+};
+
 function addSatoshis(client, userId, amount, callback) {
 
     client.query('UPDATE users SET balance_satoshis = balance_satoshis + $1 WHERE id = $2', [amount, userId], function(err, res) {
