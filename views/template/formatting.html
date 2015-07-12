@@ -1,0 +1,12 @@
+{{##def.formatDecimals:param:
+  {{=param.n.toFixed(param.decimals).replace(/(\d)(?=(\d{3})+(?!\D))/g, "$1,")}}
+#}}
+{{##def.formatSatoshis:n:
+  {{#def.formatDecimals: {n : n/100, decimals: 2} }}
+#}}
+{{##def.formatMultiplier:n:
+  {{#def.formatDecimals: {n : n/100, decimals: 2} }}
+#}}
+{{##def.formatPercent:n:
+  {{#def.formatDecimals: (n*100).toFixed(2) }}
+#}}

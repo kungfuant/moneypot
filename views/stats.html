@@ -30,15 +30,15 @@
 
                         <tr>
                             <td><b>Deposits:</b></td>
-                            <td>{{#def.format: {n: it.stats.deposits.sum} }} bits</td>
+                            <td>{{#def.formatSatoshis: it.stats.deposits.sum }} bits</td>
                         </tr>
                         <tr>
                             <td><b>Withdrawals:</b></td>
-                            <td>{{#def.format: { n: it.stats.withdrawals.sum } }} bits</td>
+                            <td>{{#def.formatSatoshis: it.stats.withdrawals.sum }} bits</td>
                         </tr>
                         <tr>
                             <td class="strong">Net:</td>
-                            <td class="strong">{{#def.format: { n: (it.stats.deposits.sum - (it.stats.withdrawals.sum * -1)) } }} bits</td>
+                            <td class="strong">{{#def.formatSatoshis: (it.stats.deposits.sum - (it.stats.withdrawals.sum * -1)) }} bits</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -46,33 +46,33 @@
                         </tr>
                         <tr>
                             <td><b>Total Wagered:</b></td>
-                            <td>{{#def.format: {n: it.stats.plays.total_bet } }} bits</td>
+                            <td>{{#def.formatSatoshis: it.stats.plays.total_bet }} bits</td>
                         </tr>
                         <tr>
                             <td><b>Players won in cashed:</b></td>
-                            <td>{{#def.format: {n: it.stats.plays.cashed_out } }} bits <small>(
-                                   {{= (it.stats.plays.cashed_out / it.stats.plays.total_bet * 100).toFixed(2) }}%
+                            <td>{{#def.formatSatoshis: it.stats.plays.cashed_out }} bits <small>(
+                                {{#def.formatPercent: (it.stats.plays.cashed_out / it.stats.plays.total_bet) }}%
                                 )</small></td>
                         </tr>
                         <tr>
                             <td><b>Players won in bonuses:</b></td>
-                            <td>{{#def.format: {n: it.stats.plays.bonused } }} bits <small>(
-                                {{= (it.stats.plays.bonused / it.stats.plays.total_bet * 100).toFixed(2) }}%
+                            <td>{{#def.formatSatoshis: it.stats.plays.bonused }} bits <small>(
+                                {{#def.formatPercent: (it.stats.plays.bonused / it.stats.plays.total_bet) }}%
                                 )</small></td>
                         </tr>
                         <tr>
                             <td><b>Players won in total: </b></td>
-                            <td>{{#def.format: {n: (9 + it.stats.plays.cashed_out + it.stats.plays.bonused) } }} bits <small>(
-                                {{= ((it.stats.plays.cashed_out + it.stats.plays.bonused) / it.stats.plays.total_bet * 100).toFixed(2) }}%
+                            <td>{{#def.formatSatoshis: (it.stats.plays.cashed_out + it.stats.plays.bonused) }} bits <small>(
+                                {{#def.formatPercent: ((it.stats.plays.cashed_out + it.stats.plays.bonused) / it.stats.plays.total_bet) }}%
                                 )</small></td>
                         </tr>
                         <tr>
                             <td class="strong">Our Profit:</td>
                             <td class="strong">
-                                {{#def.format: {n: it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused  } }} bits
+                                {{#def.formatSatoshis: (it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused) }} bits
                                 <small>(
-                                    {{= ((it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused ) / it.stats.plays.total_bet * 100).toFixed(2) }}%
-                                    )</small>
+                                {{=#def.formatPercent: ((it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused ) / it.stats.plays.total_bet) }}%
+                                )</small>
                             </td>
                         </tr>
                         <tr>
@@ -82,13 +82,13 @@
                         <tr>
                             <td class="strong">Bankroll:</td>
                             <td class="strong">
-                                {{#def.format: {n: it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused + it.stats.bankroll_offset } }} bits
+                                {{#def.formatSatoshis: (it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused + it.stats.bankroll_offset) }} bits
                             </td>
                         </tr>
                         <tr>
                             <td class="strong">Max win per game:</td>
                             <td>
-                                {{#def.format: {n: (it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused + it.stats.bankroll_offset)*0.03 } }} bits
+                                {{#def.formatSatoshis: ((it.stats.plays.total_bet - it.stats.plays.cashed_out - it.stats.plays.bonused + it.stats.bankroll_offset)*0.03) }} bits
                             </td>
                         </tr>
                         <tr>

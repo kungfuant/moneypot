@@ -33,10 +33,10 @@
                         <a href="/user/{{=leader.username}}">{{=leader.username}}</a>
                     </td>
                     <td>
-                        {{#def.format: { n: leader.gross_profit, decimals: 2 } }}
+                        {{#def.formatSatoshis: leader.gross_profit }}
                     </td>
                     <td>
-                        {{#def.format: { n: leader.net_profit, decimals: 2 } }}
+                        {{#def.formatSatoshis: leader.net_profit }}
                     </td>
                 </tr>
             {{~}}
