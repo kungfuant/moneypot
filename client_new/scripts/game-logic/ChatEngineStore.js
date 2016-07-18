@@ -186,7 +186,7 @@ define([
             var self = this;
             if(self.channelManager.hasChannel(channel)) {
                 console.assert(msg.length >= 1 && msg.length < 500);
-                self.ws.emit('say', msg, this.currentChannel, isBot, function(err) {
+                self.ws.emit('say', msg, channel, isBot, function(err) {
                     if(err) {
                         switch(err) {
                             case 'INVALID_MUTE_COMMAND':
