@@ -303,8 +303,8 @@ define([
     /**
      * Say something in the chat, from 1 to 500 chars
      */
-    ScriptExecutor.prototype.chat = function(msg) {
-        Chat.say(msg, true);
+    ScriptExecutor.prototype.chat = function(msg, channel) {
+        Chat.say(msg, true, channel);
     };
 
 
