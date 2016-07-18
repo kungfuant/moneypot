@@ -128,6 +128,12 @@ define([
             this.updateStorage();
 
         },
+        
+        hasChannel: function(channelName) {
+            if(!this._channels.has(channelName))
+                return false;
+            return true;
+        },
 
         insertMessage: function(channelName, message, callback) {
             if(!this._channels.has(channelName))
