@@ -130,9 +130,7 @@ define([
         },
         
         hasChannel: function(channelName) {
-            if(!this._channels.has(channelName))
-                return false;
-            return true;
+            return this._channels.has(channelName);
         },
 
         insertMessage: function(channelName, message, callback) {
