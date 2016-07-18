@@ -179,44 +179,50 @@ define([
          * Sends chat message
          * @param {string} msg - String containing the message, should be longer than 1 and shorter than 500.
          * @param {bool} isBot - Flag to tell the server than this message is from a bot
+         * @param {string} channel - String containing the channel
          */
-        say: function(msg, isBot) {
+        say: function(msg, isBot, channel) {
+            if (typeof channel === 'undefined') { channel = this.currentChannel; }
             var self = this;
-            console.assert(msg.length >= 1 && msg.length < 500);
-            self.ws.emit('say', msg, this.currentChannel, isBot, function(err) {
-                if(err) {
-                    switch(err) {
-                        case 'INVALID_MUTE_COMMAND':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('Invalid mute command'));
-                            break;
-
-                        case 'USER_DOES_NOT_EXIST':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('Username does not exist'));
-                            break;
-
-                        case 'NOT_A_MODERATOR':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('Username does not exist'));
-                            break;
-
-                        case 'INVALID_UNMUTE_COMMAND':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('Invalid unmute command'));
-                            break;
-
-                        case 'USER_NOT_MUTED':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('User not muted'));
-                            break;
-
-                        case 'UNKNOWN_COMMAND':
-                            self.channelManager.insertMessageInCurrentChannel(buildChatError('Unknown command'));
-                            break;
-
-                        default:
-                            console.error('[say] ', err);
-                            break;
+            if(self.channelManager.hasChannel(channel)) {
+                console.assert(msg.length >= 1 && msg.length < 500);
+                self.ws.emit('say', msg, this.currentChannel, isBot, function(err) {
+                    if(err) {
+                        switch(err) {
+                            case 'INVALID_MUTE_COMMAND':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('Invalid mute command'));
+                                break;
+    
+                            case 'USER_DOES_NOT_EXIST':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('Username does not exist'));
+                                break;
+    
+                            case 'NOT_A_MODERATOR':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('Username does not exist'));
+                                break;
+    
+                            case 'INVALID_UNMUTE_COMMAND':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('Invalid unmute command'));
+                                break;
+    
+                            case 'USER_NOT_MUTED':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('User not muted'));
+                                break;
+    
+                            case 'UNKNOWN_COMMAND':
+                                self.channelManager.insertMessageInCurrentChannel(buildChatError('Unknown command'));
+                                break;
+    
+                            default:
+                                console.error('[say] ', err);
+                                break;
+                        }
+                        self.trigger('say-error');
                     }
-                    self.trigger('say-error');
-                }
-            });
+                });
+            } else {
+                this.trigger('say-error');
+            }
         },
 
         /** Add a client message, used for showing errors or messages on the chat **/
